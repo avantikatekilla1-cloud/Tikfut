@@ -141,6 +141,40 @@
             header h1 { font-size: 16px; }
             .team span { font-size: 14px; }
             .badge { min-width: 32px; padding: 4px 8px; }
+            body { padding: 12px; }
+            .card { width: 100%; }
+            table { table-layout: fixed; }
+            thead th, tbody td { padding: 8px 10px; }
+            thead th:nth-child(1) { width: 56px; }
+            thead th:nth-child(3) { width: 72px; }
+            .team { min-width: 0; }
+            .team img { width: 24px; height: 24px; }
+            .team span {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .scorer {
+                min-width: 0;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .scorer img { width: 24px; height: 24px; }
+            .scorer span:not(.coins) {
+                flex: 1 1 auto;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 14px;
+            }
+            .coins {
+                width: 100%;
+                font-size: 12px;
+                line-height: 1.2;
+            }
+            .pos { min-width: 32px; padding: 4px 8px; }
         }
     </style>
     <link rel="icon" href="escudos/brasileirao.png">
@@ -230,5 +264,4 @@
         });
     </script>
 </body>
-
 </html>
