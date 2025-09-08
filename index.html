@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela do Brasileirão - Vitórias</title>
+    <style>
+        :root { color-scheme: light dark; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: #0b1220;
+            color: #e6e9f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .card {
+            width: min(960px, 100%);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            overflow: hidden;
+        }
+        header {
+            padding: 28px 28px;
+            background: linear-gradient(90deg, #006437, #1273de);
+            border-bottom: 0;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #ffffff;
+        }
+        .brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+        .brand h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 0.6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #e9f3ea;
+            background: rgba(0,100,55,0.40);
+            border-bottom: 1px solid rgba(0,100,55,0.55);
+            padding: 12px 16px;
+        }
+        thead th:nth-child(1) { width: 80px; }
+        thead th:nth-child(3) { width: 100px; }
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 15px;
+        }
+        tbody tr:hover { background: rgba(255,255,255,0.05); }
+        .team {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .team img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            min-width: 36px;
+            border-radius: 8px;
+           
+            color: #00ff22;
+      
+            font-weight: 600;
+        }
+        .pos {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            min-width: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            color: #e6e9f0;
+            border: 1px solid rgba(255,255,255,0.20);
+            font-weight: 700;
+        }
+        .pos.gold {
+            background: rgba(255,215,0,0.18);
+            color: #ffe27a;
+            border-color: rgba(255,215,0,0.45);
+        }
+        .pos.silver {
+            background: rgba(192,192,192,0.18);
+            color: #f0f0f0;
+            border-color: rgba(192,192,192,0.45);
+        }
+        .pos.bronze {
+            background: rgba(205,127,50,0.18);
+            color: #f2c199;
+            border-color: rgba(205,127,50,0.45);
+        }
+        .scorer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .scorer img {
+            width: 28px;
+            height: 28px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .coins { color: #F7C14B; font-weight: 700; }
+        .relegation { background: rgba(255, 71, 87, 0.10); }
+        .relegation .badge {
+            background: rgba(255, 71, 87, 0.18);
+            color: #ff9aa3;
+            border-color: rgba(255, 71, 87, 0.35);
+        }
+        @media (max-width: 560px) {
+            header h1 { font-size: 16px; }
+            .team span { font-size: 14px; }
+            .badge { min-width: 32px; padding: 4px 8px; }
+        }
+    </style>
+    <link rel="icon" href="escudos/brasileirao.png">
+</head>
+<body>
+    <div class="card">
+        <header>
+            <div class="brand">
+                <img src="outros/logo.png" alt="Logo Brasileirão">
+                <h1>Brasileirão 2025</h1>
+            </div>
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Time</th>
+                    <th>Vitória</th>
+                    <th>Artilheiros</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+    <!-- Abra este arquivo no navegador (duplo clique) para visualizar a tabela. -->
+    <script>
+        const teams = [
+            { name: "Athletico-PR", shield: "escudos/athletico-pr.png", victories: 0, scorer: { img: "artilheiros/athletico-pr.png", name: "Pedro Lopes", coins: 0 } },
+            { name: "Atlético-GO", shield: "escudos/atletico-go.png", victories: 0, scorer: { img: "artilheiros/atletico-go.png", name: "Rafael Costa", coins: 0 } },
+            { name: "Atlético-MG", shield: "escudos/atletico-mg.png", victories: 1, scorer: { img: "artilheiros/atletico-mg.png", name: "Lord Kratos", coins: 961 } },
+            { name: "Bahia", shield: "escudos/bahia.png", victories: 0, scorer: { img: "artilheiros/bahia.png", name: "Lucas Lima", coins: 0 } },
+            { name: "Bragantino", shield: "escudos/bragantino.png", victories: 0, scorer: { img: "artilheiros/bragantino.png", name: "Matheus Alves", coins: 0 } },
+            { name: "Corinthians", shield: "escudos/corinthians.png", victories: 2, scorer: { img: "artilheiros/corinthians.png", name: "Keller Cacio", coins: 3100 } },
+            { name: "Criciúma", shield: "escudos/criciuma.png", victories: 0, scorer: { img: "artilheiros/criciuma.png", name: "Diego Cardoso", coins: 0 } },
+            { name: "Cruzeiro", shield: "escudos/cruzeiro.png", victories: 2, scorer: { img: "artilheiros/cruzeiro.png", name: "THJogador06", coins: 409 } },
+            { name: "Cuiabá", shield: "escudos/cuiaba.png", victories: 0, scorer: { img: "artilheiros/cuiaba.png", name: "André Silva", coins: 0 } },
+            { name: "Flamengo", shield: "escudos/flamengo.png", victories: 2, scorer: { img: "artilheiros/flamengo.png", name: "Luis", coins: 4500 } },
+            { name: "Fluminense", shield: "escudos/fluminense.png", victories: 1, scorer: { img: "artilheiros/fluminense.png", name: "Eren_da_liberdade_140", coins: 2900 } },
+            { name: "Fortaleza", shield: "escudos/fortaleza.png", victories: 0, scorer: { img: "artilheiros/fortaleza.png", name: "Thiago Nunes", coins: 0 } },
+            { name: "Grêmio", shield: "escudos/gremio.png", victories: 1, scorer: { img: "artilheiros/gremio.png", name: "Wesley Massoli", coins: 1000 } },
+            { name: "Internacional", shield: "escudos/internacional.png", victories: 0, scorer: { img: "artilheiros/internacional.png", name: "Eduardo Rocha", coins: 0 } },
+            { name: "Juventude", shield: "escudos/Juventude.png", victories: 0, scorer: { img: "artilheiros/Juventude.png", name: "Bruno Ferreira", coins: 0 } },
+            { name: "Palmeiras", shield: "escudos/palmeiras.png", victories: 1, scorer: { img: "artilheiros/palmeiras.png", name: "Luyspc", coins: 766 } },
+            { name: "Santos", shield: "escudos/santos.png", victories: 1, scorer: { img: "artilheiros/santos.png", name: "Arthur_011", coins: 1200 } },
+            { name: "São Paulo", shield: "escudos/sao-paulo.png", victories: 0, scorer: { img: "artilheiros/sao-paulo.png", name: "Rodrigo Teixeira", coins: 0 } },
+            { name: "Vasco", shield: "escudos/vasco.png", victories: 0, scorer: { img: "artilheiros/vasco.png", name: "Alex Barros", coins: 0 } },
+            { name: "Vitória", shield: "escudos/vitoria.png", victories: 0, scorer: { img: "artilheiros/vitoria.png", name: "Rafael Moreira", coins: 0 } },
+        ];
+
+        // Ordena por vitórias (decrescente: mais vitórias primeiro)
+        teams.sort((a, b) => b.victories - a.victories);
+
+        const tbody = document.getElementById('table-body');
+
+        teams.forEach((t, idx) => {
+            const tr = document.createElement('tr');
+
+            // Marca os 4 últimos (rebaixamento) em vermelho
+            if (idx >= teams.length - 4) {
+                tr.classList.add('relegation');
+            }
+
+            const posClass =
+                idx === 0 ? 'gold' :
+                idx === 1 ? 'silver' :
+                idx === 2 ? 'bronze' : '';
+
+            tr.innerHTML = `
+                <td><span class="pos ${posClass}">${idx + 1}</span></td>
+                <td>
+                    <div class="team">
+                        <img src="${t.shield}" alt="${t.name}">
+                        <span>${t.name}</span>
+                    </div>
+                </td>
+                <td><span class="badge">${t.victories}</span></td>
+                <td>
+                    <div class="scorer">
+                        <img src="${t.scorer.img}" alt="Artilheiro ${t.name}">
+                        <span>${t.scorer.name}</span>
+                        <span class="coins">${t.scorer.coins} Moedas</span>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    </script>
+</body>
+</html>
