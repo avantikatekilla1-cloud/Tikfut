@@ -230,7 +230,7 @@
             { name: "CRB", shield: "escudos/CRB.png", victories: 0, scorer: null },
             { name: "Cruzeiro", shield: "escudos/cruzeiro.png", victories: 0, scorer: null },
             { name: "Cuiabá", shield: "escudos/cuiaba.png", victories: 0, scorer: null },
-            { name: "Flamengo", shield: "escudos/flamengo.png", victories: 0, scorer: null },
+            { name: "Flamengo", shield: "escudos/flamengo.png", victories: 1, scorer: { img: "artilheiros/flamengo.png", name: "davitrajano54", coins: 10400 } },
             { name: "Fluminense", shield: "escudos/fluminense.png", victories: 0, scorer: null },
             { name: "Fortaleza", shield: "escudos/fortaleza.png", victories: 0, scorer: null },
             { name: "Grêmio", shield: "escudos/gremio.png", victories: 0, scorer: null },
@@ -262,7 +262,7 @@
                 <td><span class="badge">${t.victories}</span></td>
                 <td>
                     <div class="scorer">
-                        <span class="no-scorer">Sem artilheiro</span>
+                        ${t.scorer ? "<img src=\"" + t.scorer.img + "\" alt=\"Artilheiro " + t.name + "\"><span>" + t.scorer.name + "</span><span class=\"coins\">" + t.scorer.coins + " Moedas</span>" : "<span class=\"no-scorer\">Sem artilheiro</span>"}
                     </div>
                 </td>
             `;
@@ -271,3 +271,4 @@
     </script>
 </body>
 </html>
+
