@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela do Brasileirão - Vitórias</title>
+    <style>
+        :root { color-scheme: light dark; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: #0b1220;
+            color: #e6e9f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+        .card {
+            width: min(960px, 100%);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+            overflow: hidden;
+        }
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px 28px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .nav-link {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.08);
+            color: #e6e9f0;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+        .nav-link.active {
+            background: linear-gradient(90deg, #006437, #1273de);
+            color: #ffffff;
+            border-color: transparent;
+        }
+        header {
+            padding: 28px 28px;
+            background: linear-gradient(90deg, #006437, #1273de);
+            border-bottom: 0;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: #ffffff;
+        }
+        .brand img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+        .brand h1 {
+            margin: 0;
+            font-size: 26px;
+            letter-spacing: 0.6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #e9f3ea;
+            background: rgba(0,100,55,0.40);
+            border-bottom: 1px solid rgba(0,100,55,0.55);
+            padding: 12px 16px;
+        }
+        thead th:nth-child(1) { width: 80px; }
+        thead th:nth-child(3) { width: 100px; }
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 15px;
+        }
+        tbody tr:hover { background: rgba(255,255,255,0.05); }
+        .team {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .team img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            min-width: 36px;
+            border-radius: 8px;
+            color: #00ff22;
+            font-weight: 600;
+        }
+        .pos {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            min-width: 36px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            color: #e6e9f0;
+            border: 1px solid rgba(255,255,255,0.20);
+            font-weight: 700;
+        }
+        .scorer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .scorer img {
+            width: 28px;
+            height: 28px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+        .coins { color: #F7C14B; font-weight: 700; }
+        .no-scorer {
+            color: #888;
+            font-style: italic;
+        }
+        @media (max-width: 560px) {
+            header h1 { font-size: 16px; }
+            .team span { font-size: 14px; }
+            .badge { min-width: 32px; padding: 4px 8px; }
+            body { padding: 12px; }
+            .card { width: 100%; }
+            table { table-layout: fixed; }
+            thead th, tbody td { padding: 8px 10px; }
+            thead th:nth-child(1) { width: 56px; }
+            thead th:nth-child(3) { width: 72px; }
+            .team { min-width: 0; }
+            .team img { width: 24px; height: 24px; }
+            .team span {
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .scorer {
+                min-width: 0;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .scorer img { width: 24px; height: 24px; }
+            .scorer span:not(.coins) {
+                flex: 1 1 auto;
+                min-width: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-size: 14px;
+            }
+            .coins {
+                width: 100%;
+                font-size: 12px;
+                line-height: 1.2;
+            }
+            .pos { min-width: 32px; padding: 4px 8px; }
+            .navigation {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+    <link rel="icon" href="escudos/brasileirao.png">
+</head>
+<body>
+    <div class="card">
+        <div class="navigation">
+            <a href="setembro.html" class="nav-link">Setembro</a>
+            <a href="index.html" class="nav-link active">Outubro</a>
+        </div>
+        <header>
+            <div class="brand">
+                <img src="outros/logo.png" alt="Logo Brasileirão">
+                <h1>Brasileirão 2025</h1>
+            </div>
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Time</th>
+                    <th>Vitória</th>
+                    <th>Artilheiros</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+    <!-- Abra este arquivo no navegador (duplo clique) para visualizar a tabela. -->
+    <script>
+        const teams = [
+            { name: "Athletico-PR", shield: "escudos/athletico-pr.png", victories: 0, scorer: null },
+            { name: "Atlético-GO", shield: "escudos/atletico-go.png", victories: 0, scorer: null },
+            { name: "Atlético-MG", shield: "escudos/atletico-mg.png", victories: 0, scorer: null },
+            { name: "Bahia", shield: "escudos/bahia.png", victories: 0, scorer: null },
+            { name: "Botafogo", shield: "escudos/botafogo.png", victories: 0, scorer: null },
+            { name: "Bragantino", shield: "escudos/bragantino.png", victories: 0, scorer: null },
+            { name: "Corinthians", shield: "escudos/corinthians.png", victories: 0, scorer: null },
+            { name: "Criciúma", shield: "escudos/criciuma.png", victories: 0, scorer: null },
+            { name: "CRB", shield: "escudos/CRB.png", victories: 0, scorer: null },
+            { name: "Cruzeiro", shield: "escudos/cruzeiro.png", victories: 0, scorer: null },
+            { name: "Cuiabá", shield: "escudos/cuiaba.png", victories: 0, scorer: null },
+            { name: "Flamengo", shield: "escudos/flamengo.png", victories: 0, scorer: null },
+            { name: "Fluminense", shield: "escudos/fluminense.png", victories: 0, scorer: null },
+            { name: "Fortaleza", shield: "escudos/fortaleza.png", victories: 0, scorer: null },
+            { name: "Grêmio", shield: "escudos/gremio.png", victories: 0, scorer: null },
+            { name: "Internacional", shield: "escudos/internacional.png", victories: 0, scorer: null },
+            { name: "Juventude", shield: "escudos/Juventude.png", victories: 0, scorer: null },
+            { name: "Palmeiras", shield: "escudos/palmeiras.png", victories: 0, scorer: null },
+            { name: "Santos", shield: "escudos/santos.png", victories: 0, scorer: null },
+            { name: "São Paulo", shield: "escudos/sao-paulo.png", victories: 0, scorer: null },
+            { name: "Vasco", shield: "escudos/vasco.png", victories: 0, scorer: null },
+            { name: "Vitória", shield: "escudos/vitoria.png", victories: 0, scorer: null },
+        ];
+
+        // Ordena por vitórias (decrescente: mais vitórias primeiro)
+        teams.sort((a, b) => b.victories - a.victories);
+
+        const tbody = document.getElementById('table-body');
+
+        teams.forEach((t, idx) => {
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td><span class="pos">${idx + 1}</span></td>
+                <td>
+                    <div class="team">
+                        <img src="${t.shield}" alt="${t.name}">
+                        <span>${t.name}</span>
+                    </div>
+                </td>
+                <td><span class="badge">${t.victories}</span></td>
+                <td>
+                    <div class="scorer">
+                        <span class="no-scorer">Sem artilheiro</span>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    </script>
+</body>
+</html>
